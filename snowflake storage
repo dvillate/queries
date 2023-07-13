@@ -1,0 +1,71 @@
+-- Storage at database level
+with storage as (
+    select
+        usage_date
+        , date_part(month, usage_date) as usage_month
+        , database_name
+        , ((average_database_bytes + average_failsafe_bytes) / 1099511627776) as average_total_tb
+    from snowflake.account_usage.database_storage_usage_history 
+    where usage_date >= '2023-01-01'
+)
+
+select
+    database_name
+    , avg(case when usage_month = 1 then average_total_tb end) as jan_tb_storage
+    , avg(case when usage_month = 2 then average_total_tb end) as feb_tb_storage
+    , avg(case when usage_month = 3 then average_total_tb end) as mar_tb_storage
+    , avg(case when usage_month = 4 then average_total_tb end) as apr_tb_storage
+from storage
+group by 1 
+order by 4 desc
+
+-- Storage at schema level
+with storage as (
+    select
+        table_catalog
+        , table_schema
+        , table_name
+        , active_bytes
+        , time_travel_bytes
+        , failsafe_bytes
+        , ((active_bytes + time_travel_bytes + failsafe_bytes) / 1099511627776) as total_tb
+    from snowflake.account_usage.table_storage_metrics 
+    where table_catalog in ('ANALYTICS', 'BI_DEV', 'BI_PROD', 'RAW')
+)
+
+select
+    table_catalog
+    , table_schema
+    , sum(active_bytes)
+    , sum(time_travel_bytes)
+    , sum(failsafe_bytes)
+    , sum(total_tb) as total_tb
+from storage
+where table_schema ilike 'dbt_cloud_pr%'
+group by 1, 2
+order by 3 desc
+
+
+-- Storage at table level
+with storage as (
+    select
+        table_catalog
+        , table_schema
+        , table_name
+        , table_created
+        , ((active_bytes + time_travel_bytes + failsafe_bytes) / 1099511627776) as total_tb
+    from snowflake.account_usage.table_storage_metrics 
+    where 
+        table_catalog in ('RAW') 
+)
+
+select
+    table_catalog
+    , table_schema
+    , table_name
+    , table_created
+    , total_tb
+from storage
+where total_tb > 0
+order by 5 desc
+
