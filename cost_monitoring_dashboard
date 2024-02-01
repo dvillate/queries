@@ -1,0 +1,1505 @@
+---
+- dashboard: bi_snowflake_monitoring
+  title: BI Snowflake Monitoring
+  layout: newspaper
+  preferred_viewer: dashboards-next
+  description: ''
+  preferred_slug: yFTyD3gJgKJvpUVfa3Sac5
+  elements:
+  - name: Snowflake Spend Overview
+    type: text
+    title_text: Snowflake Spend Overview
+    subtitle_text: ''
+    body_text: "---"
+    row: 2
+    col: 0
+    width: 24
+    height: 2
+  - name: ''
+    type: text
+    title_text: ''
+    subtitle_text: ''
+    body_text: '[{"type":"h3","children":[{"text":""},{"type":"a","url":"https://www.notion.so/postscriptio/BI-Snowflake-Monitoring-c5188beaf1d7469caaa27c2020efeddd","children":[{"text":"Dashboard
+      Documentation"}],"id":1678725304629},{"text":""}],"align":"center","id":1677704523104}]'
+    rich_content_json: '{"format":"slate"}'
+    row: 0
+    col: 8
+    width: 8
+    height: 2
+  - title: Data Through Date
+    name: Data Through Date
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    type: single_value
+    fields: [query_history_enriched.start_date]
+    fill_fields: [query_history_enriched.start_date]
+    sorts: [query_history_enriched.start_date desc]
+    limit: 1
+    column_limit: 50
+    custom_color_enabled: true
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    show_view_names: false
+    show_row_numbers: true
+    truncate_column_names: false
+    hide_totals: false
+    hide_row_totals: false
+    table_theme: editable
+    limit_displayed_rows: false
+    defaults_version: 1
+    listen:
+      Database Name: query_history_enriched.database_name
+      Dbt Node Resource Type: dbt_queries.dbt_node_resource_type
+      Date Filter: query_history_enriched.start_date
+    row: 4
+    col: 0
+    width: 4
+    height: 3
+  - title: Overall Spend - YTD
+    name: Overall Spend - YTD
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    type: single_value
+    fields: [query_history_enriched.total_query_cost]
+    filters:
+      query_history_enriched.is_bi_usage: 'Yes'
+      query_history_enriched.start_year: this year
+    limit: 500
+    column_limit: 50
+    custom_color_enabled: true
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    value_format: "$#,###"
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    show_null_points: true
+    interpolation: linear
+    defaults_version: 1
+    listen:
+      Database Name: query_history_enriched.database_name
+      Dbt Node Resource Type: dbt_queries.dbt_node_resource_type
+      Date Filter: query_history_enriched.start_date
+    row: 4
+    col: 4
+    width: 4
+    height: 3
+  - title: Rolling 13 Month Snowflake Spend
+    name: Rolling 13 Month Snowflake Spend
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    type: looker_column
+    fields: [query_history_enriched.total_query_cost, query_history_enriched.start_month,
+      query_history_enriched.bi_usage_groups]
+    pivots: [query_history_enriched.bi_usage_groups]
+    fill_fields: [query_history_enriched.start_month]
+    filters:
+      query_history_enriched.start_year: 13 months
+      query_history_enriched.is_bi_usage: 'Yes'
+    sorts: [query_history_enriched.bi_usage_groups, query_history_enriched.start_month
+        desc]
+    limit: 500
+    column_limit: 50
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: normal
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: true
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: desc
+    show_null_labels: false
+    show_totals_labels: true
+    show_silhouette: false
+    totals_color: "#808080"
+    color_application:
+      collection_id: 7c56cc21-66e4-41c9-81ce-a60e1c3967b2
+      palette_id: 5d189dfc-4f46-46f3-822b-bfb0b61777b1
+      options:
+        steps: 5
+        reverse: false
+    y_axes: [{label: '', orientation: left, series: [{axisId: query_history_enriched.total_query_cost,
+            id: query_history_enriched.total_query_cost, name: Total Query Cost}],
+        showLabels: false, showValues: false, unpinAxis: false, tickDensity: default,
+        tickDensityCustom: 5, type: linear}]
+    x_axis_zoom: true
+    y_axis_zoom: true
+    hide_legend: false
+    series_colors:
+      Users - query_history_enriched.total_query_cost: "#079c98"
+      Looker - query_history_enriched.total_query_cost: "#F9AB00"
+      dbt - query_history_enriched.total_query_cost: "#E8710A"
+      Other - query_history_enriched.total_query_cost: "#80868B"
+    show_dropoff: false
+    custom_color_enabled: true
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    show_null_points: true
+    interpolation: linear
+    defaults_version: 1
+    show_row_numbers: true
+    transpose: false
+    truncate_text: true
+    hide_totals: false
+    hide_row_totals: false
+    size_to_fit: true
+    table_theme: white
+    header_text_alignment: left
+    header_font_size: 12
+    rows_font_size: 12
+    hidden_pivots: {}
+    listen:
+      Database Name: query_history_enriched.database_name
+      Dbt Node Resource Type: dbt_queries.dbt_node_resource_type
+      Date Filter: query_history_enriched.start_date
+    row: 7
+    col: 0
+    width: 24
+    height: 6
+  - name: dbt Spend Detail
+    type: text
+    title_text: dbt Spend Detail
+    subtitle_text: ''
+    body_text: "---"
+    row: 19
+    col: 0
+    width: 24
+    height: 2
+  - title: Rolling 60 Day dbt Spend
+    name: Rolling 60 Day dbt Spend
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    type: looker_column
+    fields: [query_history_enriched.start_date, dbt_queries.dbt_project_name, dbt_queries.total_dbt_query_cost]
+    pivots: [dbt_queries.dbt_project_name]
+    fill_fields: [query_history_enriched.start_date]
+    filters:
+      query_history_enriched.start_year: 60 days
+      dbt_queries.dbt_invocation_id: "-NULL"
+      query_history_enriched.bi_usage_groups: dbt
+    sorts: [dbt_queries.dbt_project_name, query_history_enriched.start_date desc]
+    limit: 500
+    column_limit: 50
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: normal
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: desc
+    show_null_labels: false
+    show_totals_labels: true
+    show_silhouette: false
+    totals_color: "#808080"
+    y_axes: [{label: '', orientation: left, series: [{axisId: query_history_enriched.total_query_cost,
+            id: query_history_enriched.total_query_cost, name: Total Query Cost}],
+        showLabels: false, showValues: false, unpinAxis: false, tickDensity: default,
+        tickDensityCustom: 5, type: linear}]
+    x_axis_zoom: true
+    y_axis_zoom: true
+    hide_legend: false
+    series_colors:
+      query_history_enriched.total_query_cost: "#E8710A"
+    show_dropoff: false
+    custom_color_enabled: true
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    show_null_points: true
+    interpolation: linear
+    defaults_version: 1
+    show_row_numbers: true
+    transpose: false
+    truncate_text: true
+    hide_totals: false
+    hide_row_totals: false
+    size_to_fit: true
+    table_theme: white
+    header_text_alignment: left
+    header_font_size: 12
+    rows_font_size: 12
+    hidden_pivots: {}
+    listen:
+      Dbt Job Name: dbt_queries.dbt_job_name
+      Dbt Node Name: dbt_queries.dbt_node_name
+      Dbt Project Name: dbt_queries.dbt_project_name
+      Database Name: query_history_enriched.database_name
+      Dbt Node Resource Type: dbt_queries.dbt_node_resource_type
+      Date Filter: query_history_enriched.start_date
+    row: 21
+    col: 0
+    width: 24
+    height: 6
+  - title: dbt Cost Details by Node - Rolling 60 Day
+    name: dbt Cost Details by Node - Rolling 60 Day
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    type: looker_grid
+    fields: [dbt_queries.dbt_node_name, dbt_queries.dbt_node_resource_type, dbt_queries.dbt_node_schema,
+      dbt_queries.dbt_node_is_incremental, dbt_queries.total_dbt_query_cost]
+    filters:
+      dbt_queries.dbt_node_database: "-NULL"
+      dbt_queries.dbt_invocation_id: "-NULL"
+      query_history_enriched.bi_usage_groups: dbt
+      query_history_enriched.start_year: 60 days
+    sorts: [dbt_queries.total_dbt_query_cost desc]
+    limit: 500
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: false
+    transpose: false
+    truncate_text: true
+    hide_totals: false
+    hide_row_totals: false
+    size_to_fit: true
+    table_theme: white
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    header_text_alignment: left
+    header_font_size: '12'
+    rows_font_size: '12'
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    show_sql_query_menu_options: false
+    column_order: [dbt_queries.dbt_node_name, dbt_queries.dbt_node_resource_type,
+      dbt_queries.dbt_node_schema, dbt_queries.dbt_node_is_incremental, dbt_queries.average_dbt_query_cost,
+      dbt_queries.total_dbt_query_cost]
+    show_totals: true
+    show_row_totals: true
+    truncate_header: true
+    series_labels:
+      dbt_queries.dbt_node_name: Node
+      dbt_queries.dbt_node_resource_type: Node Type
+      dbt_queries.dbt_node_schema: Node Schema
+      dbt_queries.dbt_node_is_incremental: Is Incremental (Yes / No)
+      dbt_queries.average_dbt_query_cost: Avg Query Cost
+      dbt_queries.total_dbt_query_cost: Total Query Cost
+    series_cell_visualizations:
+      dbt_queries.node_count:
+        is_active: false
+      dbt_queries.total_dbt_query_cost:
+        is_active: true
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: normal
+    legend_position: center
+    point_style: none
+    show_value_labels: true
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: desc
+    show_null_labels: false
+    show_totals_labels: true
+    show_silhouette: false
+    totals_color: "#808080"
+    y_axes: [{label: '', orientation: left, series: [{axisId: query_history_enriched.total_query_cost,
+            id: query_history_enriched.total_query_cost, name: Total Query Cost}],
+        showLabels: false, showValues: false, unpinAxis: false, tickDensity: default,
+        tickDensityCustom: 5, type: linear}]
+    x_axis_zoom: true
+    y_axis_zoom: true
+    hide_legend: false
+    show_dropoff: false
+    custom_color_enabled: true
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    show_null_points: true
+    interpolation: linear
+    defaults_version: 1
+    hidden_pivots: {}
+    hidden_fields: []
+    listen:
+      Dbt Job Name: dbt_queries.dbt_job_name
+      Dbt Node Name: dbt_queries.dbt_node_name
+      Dbt Project Name: dbt_queries.dbt_project_name
+      Database Name: query_history_enriched.database_name
+      Dbt Node Resource Type: dbt_queries.dbt_node_resource_type
+      Date Filter: query_history_enriched.start_date
+    row: 27
+    col: 10
+    width: 14
+    height: 8
+  - title: dbt Costs by Node Type - Rolling 60 Day
+    name: dbt Costs by Node Type - Rolling 60 Day
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    type: looker_bar
+    fields: [query_history_enriched.total_query_cost, dbt_queries.dbt_node_resource_type]
+    filters:
+      dbt_queries.dbt_invocation_id: "-NULL"
+      query_history_enriched.bi_usage_groups: dbt
+      query_history_enriched.start_year: 60 days
+    sorts: [query_history_enriched.total_query_cost desc 0]
+    limit: 500
+    column_limit: 50
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: normal
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: desc
+    show_null_labels: false
+    show_totals_labels: true
+    show_silhouette: false
+    totals_color: "#808080"
+    y_axes: [{label: '', orientation: left, series: [{axisId: query_history_enriched.total_query_cost,
+            id: query_history_enriched.total_query_cost, name: Total Query Cost}],
+        showLabels: false, showValues: false, unpinAxis: false, tickDensity: default,
+        tickDensityCustom: 5, type: linear}]
+    x_axis_zoom: true
+    y_axis_zoom: true
+    hide_legend: false
+    series_colors:
+      query_history_enriched.total_query_cost: "#E8710A"
+    show_dropoff: false
+    custom_color_enabled: true
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    show_null_points: true
+    interpolation: linear
+    defaults_version: 1
+    show_row_numbers: true
+    transpose: false
+    truncate_text: true
+    hide_totals: false
+    hide_row_totals: false
+    size_to_fit: true
+    table_theme: white
+    header_text_alignment: left
+    header_font_size: 12
+    rows_font_size: 12
+    hidden_pivots: {}
+    listen:
+      Dbt Job Name: dbt_queries.dbt_job_name
+      Dbt Node Name: dbt_queries.dbt_node_name
+      Dbt Project Name: dbt_queries.dbt_project_name
+      Database Name: query_history_enriched.database_name
+      Dbt Node Resource Type: dbt_queries.dbt_node_resource_type
+      Date Filter: query_history_enriched.start_date
+    row: 35
+    col: 16
+    width: 8
+    height: 8
+  - title: dbt Costs by Run Reason - Rolling 60 Day
+    name: dbt Costs by Run Reason - Rolling 60 Day
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    type: looker_bar
+    fields: [query_history_enriched.total_query_cost, dbt_queries.dbt_cloud_run_reason]
+    filters:
+      dbt_queries.dbt_invocation_id: "-NULL"
+      query_history_enriched.bi_usage_groups: dbt
+      query_history_enriched.start_year: 60 days
+    sorts: [query_history_enriched.total_query_cost desc 0]
+    limit: 500
+    column_limit: 50
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: normal
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: desc
+    show_null_labels: false
+    show_totals_labels: true
+    show_silhouette: false
+    totals_color: "#808080"
+    y_axes: [{label: '', orientation: left, series: [{axisId: query_history_enriched.total_query_cost,
+            id: query_history_enriched.total_query_cost, name: Total Query Cost}],
+        showLabels: false, showValues: false, unpinAxis: false, tickDensity: default,
+        tickDensityCustom: 5, type: linear}]
+    x_axis_zoom: true
+    y_axis_zoom: true
+    hide_legend: false
+    series_colors:
+      query_history_enriched.total_query_cost: "#E8710A"
+    show_dropoff: false
+    custom_color_enabled: true
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    show_null_points: true
+    interpolation: linear
+    defaults_version: 1
+    show_row_numbers: true
+    transpose: false
+    truncate_text: true
+    hide_totals: false
+    hide_row_totals: false
+    size_to_fit: true
+    table_theme: white
+    header_text_alignment: left
+    header_font_size: 12
+    rows_font_size: 12
+    hidden_pivots: {}
+    listen:
+      Dbt Job Name: dbt_queries.dbt_job_name
+      Dbt Node Name: dbt_queries.dbt_node_name
+      Dbt Project Name: dbt_queries.dbt_project_name
+      Database Name: query_history_enriched.database_name
+      Dbt Node Resource Type: dbt_queries.dbt_node_resource_type
+      Date Filter: query_history_enriched.start_date
+    row: 35
+    col: 8
+    width: 8
+    height: 8
+  - title: dbt Costs by Job - Rolling 60 Day
+    name: dbt Costs by Job - Rolling 60 Day
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    type: looker_bar
+    fields: [query_history_enriched.total_query_cost, dbt_queries.dbt_job_name]
+    filters:
+      dbt_queries.dbt_invocation_id: "-NULL"
+      query_history_enriched.bi_usage_groups: dbt
+      query_history_enriched.start_year: 60 days
+    sorts: [query_history_enriched.total_query_cost desc 0]
+    limit: 500
+    column_limit: 50
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: normal
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: desc
+    show_null_labels: false
+    show_totals_labels: true
+    show_silhouette: false
+    totals_color: "#808080"
+    y_axes: [{label: '', orientation: left, series: [{axisId: query_history_enriched.total_query_cost,
+            id: query_history_enriched.total_query_cost, name: Total Query Cost}],
+        showLabels: false, showValues: false, unpinAxis: false, tickDensity: default,
+        tickDensityCustom: 5, type: linear}]
+    x_axis_zoom: true
+    y_axis_zoom: true
+    hide_legend: false
+    series_colors:
+      query_history_enriched.total_query_cost: "#E8710A"
+    show_dropoff: false
+    custom_color_enabled: true
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    show_null_points: true
+    interpolation: linear
+    defaults_version: 1
+    show_row_numbers: true
+    transpose: false
+    truncate_text: true
+    hide_totals: false
+    hide_row_totals: false
+    size_to_fit: true
+    table_theme: white
+    header_text_alignment: left
+    header_font_size: 12
+    rows_font_size: 12
+    hidden_pivots: {}
+    listen:
+      Dbt Job Name: dbt_queries.dbt_job_name
+      Dbt Node Name: dbt_queries.dbt_node_name
+      Dbt Project Name: dbt_queries.dbt_project_name
+      Database Name: query_history_enriched.database_name
+      Dbt Node Resource Type: dbt_queries.dbt_node_resource_type
+      Date Filter: query_history_enriched.start_date
+    row: 35
+    col: 0
+    width: 8
+    height: 8
+  - title: dbt Spend - YTD
+    name: dbt Spend - YTD
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    type: single_value
+    fields: [query_history_enriched.total_query_cost]
+    filters:
+      query_history_enriched.is_bi_usage: 'Yes'
+      query_history_enriched.bi_usage_groups: dbt
+      query_history_enriched.start_year: this year
+    limit: 500
+    column_limit: 50
+    custom_color_enabled: true
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    value_format: "$#,###"
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    show_null_points: true
+    interpolation: linear
+    defaults_version: 1
+    listen:
+      Database Name: query_history_enriched.database_name
+      Dbt Node Resource Type: dbt_queries.dbt_node_resource_type
+      Date Filter: query_history_enriched.start_date
+    row: 4
+    col: 16
+    width: 4
+    height: 3
+  - title: Users Spend - YTD
+    name: Users Spend - YTD
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    type: single_value
+    fields: [query_history_enriched.total_query_cost]
+    filters:
+      query_history_enriched.is_bi_usage: 'Yes'
+      query_history_enriched.bi_usage_groups: Users
+      query_history_enriched.start_year: this year
+    limit: 500
+    column_limit: 50
+    custom_color_enabled: true
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    value_format: "$#,###"
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    show_null_points: true
+    interpolation: linear
+    defaults_version: 1
+    listen:
+      Database Name: query_history_enriched.database_name
+      Dbt Node Resource Type: dbt_queries.dbt_node_resource_type
+      Date Filter: query_history_enriched.start_date
+    row: 4
+    col: 8
+    width: 4
+    height: 3
+  - title: Looker Spend - YTD
+    name: Looker Spend - YTD
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    type: single_value
+    fields: [query_history_enriched.total_query_cost]
+    filters:
+      query_history_enriched.is_bi_usage: 'Yes'
+      query_history_enriched.bi_usage_groups: Looker
+      query_history_enriched.start_year: this year
+    limit: 500
+    column_limit: 50
+    custom_color_enabled: true
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    value_format: "$#,###"
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    show_null_points: true
+    interpolation: linear
+    defaults_version: 1
+    listen:
+      Database Name: query_history_enriched.database_name
+      Dbt Node Resource Type: dbt_queries.dbt_node_resource_type
+      Date Filter: query_history_enriched.start_date
+    row: 4
+    col: 12
+    width: 4
+    height: 3
+  - title: All Other Spend - YTD
+    name: All Other Spend - YTD
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    type: single_value
+    fields: [query_history_enriched.total_query_cost]
+    filters:
+      query_history_enriched.is_bi_usage: 'Yes'
+      query_history_enriched.bi_usage_groups: "-Users,-dbt,-Looker"
+      query_history_enriched.start_year: this year
+    limit: 500
+    column_limit: 50
+    custom_color_enabled: true
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    value_format: "$#,###"
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    show_null_points: true
+    interpolation: linear
+    defaults_version: 1
+    listen:
+      Database Name: query_history_enriched.database_name
+      Dbt Node Resource Type: dbt_queries.dbt_node_resource_type
+      Date Filter: query_history_enriched.start_date
+    row: 4
+    col: 20
+    width: 4
+    height: 3
+  - title: Top dbt Node Costs - Rolling 60 Day
+    name: Top dbt Node Costs - Rolling 60 Day
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    type: looker_grid
+    fields: [dbt_queries.dbt_node_name, prior_30_day_average, 30_day_average]
+    filters:
+      dbt_queries.dbt_node_database: "-NULL"
+      dbt_queries.dbt_invocation_id: "-NULL"
+      prior_30_day_average: ">0"
+      query_history_enriched.bi_usage_groups: dbt
+      query_history_enriched.start_year: 60 days
+    sorts: [30_day_average desc]
+    limit: 500
+    column_limit: 50
+    dynamic_fields:
+    - category: table_calculation
+      expression: "(${30_day_average} - ${prior_30_day_average}) / ${prior_30_day_average}"
+      label: "% Change"
+      value_format:
+      value_format_name: percent_2
+      _kind_hint: measure
+      table_calculation: change
+      _type_hint: number
+    - category: measure
+      expression:
+      label: 30 Day Average
+      value_format:
+      value_format_name:
+      based_on: dbt_queries.total_dbt_query_cost
+      _kind_hint: measure
+      measure: 30_day_average
+      type: sum
+      _type_hint: number
+      filters:
+        query_history_enriched.start_date: 30 day
+    - category: measure
+      expression:
+      label: Prior 30 Day Average
+      value_format:
+      value_format_name:
+      based_on: dbt_queries.total_dbt_query_cost
+      _kind_hint: measure
+      measure: prior_30_day_average
+      type: sum
+      _type_hint: number
+      filters:
+        query_history_enriched.start_date: 60 day ago for 30 day
+    show_view_names: false
+    show_row_numbers: false
+    transpose: false
+    truncate_text: true
+    hide_totals: false
+    hide_row_totals: false
+    size_to_fit: true
+    table_theme: white
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    header_text_alignment: left
+    header_font_size: '12'
+    rows_font_size: '12'
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    show_sql_query_menu_options: false
+    column_order: [dbt_queries.dbt_node_name, prior_30_day_average, 30_day_average,
+      change]
+    show_totals: true
+    show_row_totals: true
+    truncate_header: false
+    series_labels:
+      dbt_queries.dbt_node_name: Node
+      dbt_queries.dbt_node_resource_type: Node Type
+      dbt_queries.dbt_node_schema: Node Schema
+      dbt_queries.dbt_node_is_incremental: Is Incremental (Yes / No)
+    series_cell_visualizations:
+      dbt_queries.node_count:
+        is_active: false
+      dbt_queries.total_dbt_query_cost:
+        is_active: true
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: normal
+    legend_position: center
+    point_style: none
+    show_value_labels: true
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: desc
+    show_null_labels: false
+    show_totals_labels: true
+    show_silhouette: false
+    totals_color: "#808080"
+    y_axes: [{label: '', orientation: left, series: [{axisId: query_history_enriched.total_query_cost,
+            id: query_history_enriched.total_query_cost, name: Total Query Cost}],
+        showLabels: false, showValues: false, unpinAxis: false, tickDensity: default,
+        tickDensityCustom: 5, type: linear}]
+    x_axis_zoom: true
+    y_axis_zoom: true
+    hide_legend: false
+    show_dropoff: false
+    custom_color_enabled: true
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    show_null_points: true
+    interpolation: linear
+    defaults_version: 1
+    hidden_pivots: {}
+    hidden_fields: []
+    minimum_column_width: 75
+    listen:
+      Dbt Job Name: dbt_queries.dbt_job_name
+      Dbt Node Name: dbt_queries.dbt_node_name
+      Dbt Project Name: dbt_queries.dbt_project_name
+      Database Name: query_history_enriched.database_name
+      Dbt Node Resource Type: dbt_queries.dbt_node_resource_type
+      Date Filter: query_history_enriched.start_date
+    row: 27
+    col: 0
+    width: 10
+    height: 8
+  - title: Rolling 60 Day Snowflake Spend
+    name: Rolling 60 Day Snowflake Spend
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    type: looker_column
+    fields: [query_history_enriched.total_query_cost, query_history_enriched.start_date]
+    fill_fields: [query_history_enriched.start_date]
+    filters:
+      query_history_enriched.start_year: 60 days
+      query_history_enriched.is_bi_usage: 'Yes'
+    sorts: [query_history_enriched.start_date desc]
+    limit: 500
+    column_limit: 50
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: normal
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: desc
+    show_null_labels: false
+    show_totals_labels: true
+    show_silhouette: false
+    totals_color: "#808080"
+    color_application:
+      collection_id: 7c56cc21-66e4-41c9-81ce-a60e1c3967b2
+      palette_id: 5d189dfc-4f46-46f3-822b-bfb0b61777b1
+      options:
+        steps: 5
+        reverse: false
+    y_axes: [{label: '', orientation: left, series: [{axisId: query_history_enriched.total_query_cost,
+            id: query_history_enriched.total_query_cost, name: Total Query Cost}],
+        showLabels: false, showValues: false, unpinAxis: false, tickDensity: default,
+        tickDensityCustom: 5, type: linear}]
+    x_axis_zoom: true
+    y_axis_zoom: true
+    hide_legend: false
+    series_colors:
+      Users - query_history_enriched.total_query_cost: "#079c98"
+      Looker - query_history_enriched.total_query_cost: "#F9AB00"
+      dbt - query_history_enriched.total_query_cost: "#E8710A"
+      Other - query_history_enriched.total_query_cost: "#80868B"
+      query_history_enriched.total_query_cost: "#9334E6"
+    show_dropoff: false
+    custom_color_enabled: true
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    show_null_points: true
+    interpolation: linear
+    defaults_version: 1
+    show_row_numbers: true
+    transpose: false
+    truncate_text: true
+    hide_totals: false
+    hide_row_totals: false
+    size_to_fit: true
+    table_theme: white
+    header_text_alignment: left
+    header_font_size: 12
+    rows_font_size: 12
+    hidden_pivots: {}
+    listen:
+      Database Name: query_history_enriched.database_name
+      Dbt Node Resource Type: dbt_queries.dbt_node_resource_type
+      Date Filter: query_history_enriched.start_date
+    row: 13
+    col: 0
+    width: 24
+    height: 6
+  - name: Looker Spend Detail
+    type: text
+    title_text: Looker Spend Detail
+    subtitle_text: ''
+    body_text: "---"
+    row: 43
+    col: 0
+    width: 24
+    height: 2
+  - title: Rolling 13 Month Looker Spend
+    name: Rolling 13 Month Looker Spend
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    type: looker_column
+    fields: [query_history_enriched.total_query_cost, query_history_enriched.looker_query_buckets,
+      query_history_enriched.start_month]
+    pivots: [query_history_enriched.looker_query_buckets]
+    fill_fields: [query_history_enriched.start_month]
+    filters:
+      query_history_enriched.start_year: 13 months
+      query_history_enriched.database_name: ''
+      query_history_enriched.is_bi_usage: 'Yes'
+      dbt_queries.dbt_node_resource_type: ''
+      query_history_enriched.bi_usage_groups: Looker
+      query_history_enriched.query_id: ''
+    sorts: [query_history_enriched.looker_query_buckets, query_history_enriched.start_month
+        desc]
+    limit: 500
+    column_limit: 50
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: normal
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: desc
+    show_null_labels: false
+    show_totals_labels: true
+    show_silhouette: false
+    totals_color: "#808080"
+    color_application:
+      collection_id: 7c56cc21-66e4-41c9-81ce-a60e1c3967b2
+      palette_id: 5d189dfc-4f46-46f3-822b-bfb0b61777b1
+      options:
+        steps: 5
+        reverse: false
+    y_axes: [{label: '', orientation: left, series: [{axisId: query_history_enriched.total_query_cost,
+            id: query_history_enriched.total_query_cost, name: Total Query Cost}],
+        showLabels: false, showValues: false, unpinAxis: false, tickDensity: default,
+        tickDensityCustom: 5, type: linear}]
+    x_axis_zoom: true
+    y_axis_zoom: true
+    hide_legend: false
+    series_colors:
+      Users - query_history_enriched.total_query_cost: "#079c98"
+      Looker - query_history_enriched.total_query_cost: "#F9AB00"
+      dbt - query_history_enriched.total_query_cost: "#E8710A"
+      Other - query_history_enriched.total_query_cost: "#80868B"
+      query_history_enriched.total_query_cost: "#9334E6"
+    show_dropoff: false
+    custom_color_enabled: true
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    show_null_points: true
+    interpolation: linear
+    defaults_version: 1
+    show_row_numbers: true
+    transpose: false
+    truncate_text: true
+    hide_totals: false
+    hide_row_totals: false
+    size_to_fit: true
+    table_theme: white
+    header_text_alignment: left
+    header_font_size: 12
+    rows_font_size: 12
+    hidden_pivots: {}
+    listen:
+      Date Filter: query_history_enriched.start_date
+      Looker Query Buckets: query_history_enriched.looker_query_buckets
+    row: 45
+    col: 0
+    width: 24
+    height: 6
+  - title: Rolling 60 Day Looker Spend
+    name: Rolling 60 Day Looker Spend
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    type: looker_column
+    fields: [query_history_enriched.total_query_cost, query_history_enriched.start_date,
+      query_history_enriched.looker_query_buckets]
+    pivots: [query_history_enriched.looker_query_buckets]
+    fill_fields: [query_history_enriched.start_date]
+    filters:
+      query_history_enriched.start_year: 60 days
+      query_history_enriched.database_name: ''
+      query_history_enriched.is_bi_usage: 'Yes'
+      dbt_queries.dbt_node_resource_type: ''
+      query_history_enriched.bi_usage_groups: Looker
+      query_history_enriched.query_id: ''
+    sorts: [query_history_enriched.looker_query_buckets, query_history_enriched.start_date
+        desc]
+    limit: 500
+    column_limit: 50
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: normal
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: desc
+    show_null_labels: false
+    show_totals_labels: true
+    show_silhouette: false
+    totals_color: "#808080"
+    color_application:
+      collection_id: 7c56cc21-66e4-41c9-81ce-a60e1c3967b2
+      palette_id: 5d189dfc-4f46-46f3-822b-bfb0b61777b1
+      options:
+        steps: 5
+        reverse: false
+    y_axes: [{label: '', orientation: left, series: [{axisId: query_history_enriched.total_query_cost,
+            id: query_history_enriched.total_query_cost, name: Total Query Cost}],
+        showLabels: false, showValues: false, unpinAxis: false, tickDensity: default,
+        tickDensityCustom: 5, type: linear}]
+    x_axis_zoom: true
+    y_axis_zoom: true
+    hide_legend: false
+    series_colors:
+      Users - query_history_enriched.total_query_cost: "#079c98"
+      Looker - query_history_enriched.total_query_cost: "#F9AB00"
+      dbt - query_history_enriched.total_query_cost: "#E8710A"
+      Other - query_history_enriched.total_query_cost: "#80868B"
+      query_history_enriched.total_query_cost: "#9334E6"
+    show_dropoff: false
+    custom_color_enabled: true
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    enable_conditional_formatting: false
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    show_null_points: true
+    interpolation: linear
+    defaults_version: 1
+    show_row_numbers: true
+    transpose: false
+    truncate_text: true
+    hide_totals: false
+    hide_row_totals: false
+    size_to_fit: true
+    table_theme: white
+    header_text_alignment: left
+    header_font_size: 12
+    rows_font_size: 12
+    hidden_pivots: {}
+    listen:
+      Date Filter: query_history_enriched.start_date
+      Looker Query Buckets: query_history_enriched.looker_query_buckets
+    row: 51
+    col: 0
+    width: 24
+    height: 6
+  - title: Rolling 60 Day Looker Query Detail
+    name: Rolling 60 Day Looker Query Detail
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    type: looker_grid
+    fields: [query_history_enriched.total_query_cost, query_history_enriched.looker_query_buckets,
+      query_history_enriched.query_text_no_comments, query_history_enriched.query_count]
+    filters:
+      query_history_enriched.start_year: 60 days
+      query_history_enriched.database_name: ''
+      query_history_enriched.is_bi_usage: 'Yes'
+      dbt_queries.dbt_node_resource_type: ''
+      query_history_enriched.bi_usage_groups: Looker
+      query_history_enriched.query_id: ''
+    sorts: [query_history_enriched.total_query_cost desc]
+    limit: 500
+    column_limit: 50
+    show_view_names: false
+    show_row_numbers: false
+    transpose: false
+    truncate_text: true
+    hide_totals: false
+    hide_row_totals: false
+    size_to_fit: true
+    table_theme: white
+    limit_displayed_rows: false
+    enable_conditional_formatting: false
+    header_text_alignment: left
+    header_font_size: '12'
+    rows_font_size: '12'
+    conditional_formatting_include_totals: false
+    conditional_formatting_include_nulls: false
+    color_application:
+      collection_id: 7c56cc21-66e4-41c9-81ce-a60e1c3967b2
+      palette_id: 5d189dfc-4f46-46f3-822b-bfb0b61777b1
+      options:
+        steps: 5
+        reverse: false
+    show_sql_query_menu_options: false
+    show_totals: true
+    show_row_totals: true
+    truncate_header: false
+    minimum_column_width: 75
+    series_cell_visualizations:
+      query_history_enriched.total_query_cost:
+        is_active: false
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: false
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: normal
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: desc
+    show_null_labels: false
+    show_totals_labels: true
+    show_silhouette: false
+    totals_color: "#808080"
+    y_axes: [{label: '', orientation: left, series: [{axisId: query_history_enriched.total_query_cost,
+            id: query_history_enriched.total_query_cost, name: Total Query Cost}],
+        showLabels: false, showValues: false, unpinAxis: false, tickDensity: default,
+        tickDensityCustom: 5, type: linear}]
+    x_axis_zoom: true
+    y_axis_zoom: true
+    hide_legend: false
+    series_colors:
+      Users - query_history_enriched.total_query_cost: "#079c98"
+      Looker - query_history_enriched.total_query_cost: "#F9AB00"
+      dbt - query_history_enriched.total_query_cost: "#E8710A"
+      Other - query_history_enriched.total_query_cost: "#80868B"
+      query_history_enriched.total_query_cost: "#9334E6"
+    show_dropoff: false
+    custom_color_enabled: true
+    show_single_value_title: true
+    show_comparison: false
+    comparison_type: value
+    comparison_reverse_colors: false
+    show_comparison_label: true
+    show_null_points: true
+    interpolation: linear
+    defaults_version: 1
+    hidden_pivots: {}
+    listen:
+      Date Filter: query_history_enriched.start_date
+      Looker Query Buckets: query_history_enriched.looker_query_buckets
+    row: 57
+    col: 0
+    width: 24
+    height: 8
+  filters:
+  - name: Date Filter
+    title: Date Filter
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: advanced
+      display: popover
+      options: []
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    listens_to_filters: []
+    field: query_history_enriched.start_date
+  - name: Dbt Project Name
+    title: Dbt Project Name
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: advanced
+      display: popover
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    listens_to_filters: []
+    field: dbt_queries.dbt_project_name
+  - name: Dbt Job Name
+    title: Dbt Job Name
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: advanced
+      display: popover
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    listens_to_filters: [Dbt Project Name]
+    field: dbt_queries.dbt_job_name
+  - name: Dbt Node Name
+    title: Dbt Node Name
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: advanced
+      display: popover
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    listens_to_filters: [Dbt Project Name]
+    field: dbt_queries.dbt_node_name
+  - name: Database Name
+    title: Database Name
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: advanced
+      display: popover
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    listens_to_filters: []
+    field: query_history_enriched.database_name
+  - name: Dbt Node Resource Type
+    title: Dbt Node Resource Type
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: advanced
+      display: popover
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    listens_to_filters: []
+    field: dbt_queries.dbt_node_resource_type
+  - name: Looker Query Buckets
+    title: Looker Query Buckets
+    type: field_filter
+    default_value: ''
+    allow_multiple_values: true
+    required: false
+    ui_config:
+      type: advanced
+      display: popover
+    model: dbt_metadata
+    explore: snowflake_monitoring
+    listens_to_filters: []
+    field: query_history_enriched.looker_query_buckets
