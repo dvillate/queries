@@ -1,0 +1,17 @@
+connection: "looker_connection"
+
+include: "/business_intelligence/explores/snowflake_monitoring/*.explore.lkml"
+
+label: "business_intelligence"
+
+fiscal_month_offset: 0 #fiscal year starts in Jan, add this to allow fiscal parameters
+
+datagroup: standard_fours_hr {
+  max_cache_age: "4 hours"
+  interval_trigger: "4 hours"
+}
+
+datagroup: standard_24_hr {
+  max_cache_age: "24 hours"
+  interval_trigger: "24 hours"
+}
