@@ -1,0 +1,634 @@
+view: query_history_enriched {
+  sql_table_name: "CORE_DBT_SNOWFLAKE_MONITORING"."QUERY_HISTORY_ENRICHED";;
+
+  ## Primary Key
+  dimension: surrogate_key {
+    type: string
+    sql: ${TABLE}."QUERY_ID" || ${TABLE}."START_TIME" ;;
+    hidden: yes
+  }
+
+  ## Properties
+  dimension: bytes_deleted {
+    type: number
+    sql: ${TABLE}."BYTES_DELETED" ;;
+    description: "Number of bytes deleted by the query"
+    group_label: "Byte Properties"
+    hidden: yes
+  }
+
+  dimension: bytes_read_from_result {
+    type: number
+    sql: ${TABLE}."BYTES_READ_FROM_RESULT" ;;
+    description: "Number of bytes read from a result object"
+    group_label: "Byte Properties"
+    hidden: yes
+  }
+
+  dimension: bytes_scanned {
+    type: number
+    sql: ${TABLE}."BYTES_SCANNED" ;;
+    description: "Number of bytes scanned by this statement"
+    group_label: "Byte Properties"
+    hidden: yes
+  }
+
+  dimension: bytes_sent_over_the_network {
+    type: number
+    sql: ${TABLE}."BYTES_SENT_OVER_THE_NETWORK" ;;
+    description: "Volume of data sent over the network"
+    group_label: "Byte Properties"
+    hidden: yes
+  }
+
+  dimension: bytes_spilled_to_local_storage {
+    type: number
+    sql: ${TABLE}."BYTES_SPILLED_TO_LOCAL_STORAGE" ;;
+    description: "Volume of data spilled to local disk on the warehouse nodes"
+    group_label: "Byte Properties"
+    hidden: yes
+  }
+
+  dimension: bytes_spilled_to_remote_storage {
+    type: number
+    sql: ${TABLE}."BYTES_SPILLED_TO_REMOTE_STORAGE" ;;
+    description: "Volume of data spilled to remote disk (i.e. AWS S3, Google Cloud Storage, Azure Blob)"
+    group_label: "Byte Properties"
+    hidden: yes
+  }
+
+  dimension: bytes_written {
+    type: number
+    sql: ${TABLE}."BYTES_WRITTEN" ;;
+    description: "Number of bytes written (e.g. when loading into a table)"
+    group_label: "Byte Properties"
+    hidden: yes
+  }
+
+  dimension: bytes_written_to_result {
+    type: number
+    sql: ${TABLE}."BYTES_WRITTEN_TO_RESULT" ;;
+    description: "Number of bytes written to a result object"
+    group_label: "Byte Properties"
+    hidden: yes
+  }
+
+  dimension: cloud_services_cost {
+    type: number
+    sql: ${TABLE}."CLOUD_SERVICES_COST" ;;
+    description: "Cloud service costs associated with the query, in USD. Can be 0 if total cloud services credits consumption was less than 10% of total compute credits consumption on that day"
+    group_label: "Query Cost Properties"
+  }
+
+  dimension: compute_cost {
+    type: number
+    sql: ${TABLE}."COMPUTE_COST" ;;
+    description: "Compute costs associated with the query, in USD. Can be 0 if the query did not run on a warehouse"
+    group_label: "Query Cost Properties"
+  }
+
+  dimension: query_cost {
+    type: number
+    sql: ${TABLE}."QUERY_COST" ;;
+    description: "Total cost associated with the query, calculated as sum of compute_cost and cloud_services_cost, in USD"
+    group_label: "Query Cost Properties"
+    value_format_name: usd
+  }
+
+  dimension: data_scanned_from_cache_gb {
+    type: number
+    sql: ${TABLE}."DATA_SCANNED_FROM_CACHE_GB" ;;
+    description: "Volume of data (in GB) scanned from the local disk cache"
+    group_label: "Data Transfer Properties"
+    hidden: yes
+  }
+
+  dimension: data_scanned_gb {
+    type: number
+    sql: ${TABLE}."DATA_SCANNED_GB" ;;
+    description: "Number of gb scanned by this statement"
+    group_label: "Data Transfer Properties"
+    hidden: yes
+  }
+
+  dimension: data_sent_over_the_network_gb {
+    type: number
+    sql: ${TABLE}."DATA_SENT_OVER_THE_NETWORK_GB" ;;
+    description: "Volume of data (in GB) sent over the network"
+    group_label: "Data Transfer Properties"
+    hidden: yes
+  }
+
+  dimension: data_spilled_to_local_storage_gb {
+    type: number
+    sql: ${TABLE}."DATA_SPILLED_TO_LOCAL_STORAGE_GB" ;;
+    description: "Volume of data (in GB) spilled to local disk on the warehouse nodes"
+    group_label: "Data Transfer Properties"
+    hidden: no
+  }
+
+  dimension: data_spilled_to_remote_storage_gb {
+    type: number
+    sql: ${TABLE}."DATA_SPILLED_TO_REMOTE_STORAGE_GB" ;;
+    description: "Volume of data (in GB) spilled to remote disk (i.e. AWS S3, Google Cloud Storage, Azure Blob)"
+    group_label: "Data Transfer Properties"
+    hidden: no
+  }
+
+
+  dimension: external_function_total_invocations {
+    type: number
+    sql: ${TABLE}."EXTERNAL_FUNCTION_TOTAL_INVOCATIONS" ;;
+    description: "The aggregate number of times that this query called remote services"
+    group_label: "External Function Properties"
+    hidden: yes
+  }
+
+  dimension: external_function_total_received_bytes {
+    type: number
+    sql: ${TABLE}."EXTERNAL_FUNCTION_TOTAL_RECEIVED_BYTES" ;;
+    description: "The total number of bytes that this query received from all calls to all remote services"
+    group_label: "External Function Properties"
+    hidden: yes
+  }
+
+  dimension: external_function_total_received_rows {
+    type: number
+    sql: ${TABLE}."EXTERNAL_FUNCTION_TOTAL_RECEIVED_ROWS" ;;
+    description: "The total number of rows that this query received from all calls to all remote services"
+    group_label: "External Function Properties"
+    hidden: yes
+  }
+
+  dimension: external_function_total_sent_bytes {
+    type: number
+    sql: ${TABLE}."EXTERNAL_FUNCTION_TOTAL_SENT_BYTES" ;;
+    description: "The total number of bytes that this query sent in all calls to all remote services"
+    group_label: "External Function Properties"
+    hidden: yes
+  }
+
+  dimension: external_function_total_sent_rows {
+    type: number
+    sql: ${TABLE}."EXTERNAL_FUNCTION_TOTAL_SENT_ROWS" ;;
+    description: "The total number of rows that this query sent in all calls to all remote services"
+    group_label: "External Function Properties"
+    hidden: yes
+  }
+
+  dimension: inbound_data_transfer_bytes {
+    type: number
+    sql: ${TABLE}."INBOUND_DATA_TRANSFER_BYTES" ;;
+    description: "Number of bytes transferred in statements that load data from another region and/or cloud"
+    group_label: "Inbound Data Transfer Properties"
+    hidden: yes
+  }
+
+  dimension: inbound_data_transfer_cloud {
+    type: string
+    sql: ${TABLE}."INBOUND_DATA_TRANSFER_CLOUD" ;;
+    description: "Source cloud provider for statements that load data from another region and/or cloud"
+    group_label: "Inbound Data Transfer Properties"
+    hidden: yes
+  }
+
+  dimension: inbound_data_transfer_region {
+    type: string
+    sql: ${TABLE}."INBOUND_DATA_TRANSFER_REGION" ;;
+    description: "Source region for statements that load data from another region and/or cloud"
+    group_label: "Inbound Data Transfer Properties"
+    hidden: yes
+  }
+
+  dimension: outbound_data_transfer_bytes {
+    type: number
+    sql: ${TABLE}."OUTBOUND_DATA_TRANSFER_BYTES" ;;
+    description: "Number of bytes transferred in statements that unload data to another region and/or cloud"
+    group_label: "Outbound Data Transfer Properties"
+    hidden: yes
+  }
+
+  dimension: outbound_data_transfer_cloud {
+    type: string
+    sql: ${TABLE}."OUTBOUND_DATA_TRANSFER_CLOUD" ;;
+    description: "Target cloud provider for statements that unload data to another region and/or cloud"
+    group_label: "Outbound Data Transfer Properties"
+    hidden: yes
+  }
+
+  dimension: outbound_data_transfer_region {
+    type: string
+    sql: ${TABLE}."OUTBOUND_DATA_TRANSFER_REGION" ;;
+    description: "Target region for statements that unload data to another region and/or cloud"
+    group_label: "Outbound Data Transfer Properties"
+    hidden: yes
+  }
+
+  dimension: cluster_number {
+    type: number
+    sql: ${TABLE}."CLUSTER_NUMBER" ;;
+    description: "The cluster (in a multi-cluster warehouse) that this statement executed on"
+  }
+
+  dimension: compilation_time_ms {
+    type: number
+    sql: ${TABLE}."COMPILATION_TIME_MS" ;;
+    description: "Compilation time (in milliseconds)"
+    hidden: yes
+  }
+
+  dimension: compilation_time_s {
+    type: number
+    sql: ${TABLE}."COMPILATION_TIME_S" ;;
+    description: "Compilation time (in seconds)"
+  }
+
+  dimension: credits_used_cloud_services {
+    type: number
+    sql: ${TABLE}."CREDITS_USED_CLOUD_SERVICES" ;;
+    description: "Number of credits used for cloud services"
+  }
+
+  dimension: database_id {
+    type: number
+    sql: ${TABLE}."DATABASE_ID" ;;
+    description: "Internal/system-generated identifier for the database that was in use"
+    hidden: yes
+  }
+
+  dimension: database_name {
+    type: string
+    sql: ${TABLE}."DATABASE_NAME" ;;
+    description: "Database that was in use at the time of the query"
+  }
+
+  dimension: dbt_metadata {
+    type: string
+    sql: ${TABLE}."DBT_METADATA" ;;
+    description: "Metadata from the JSON string added to the query by dbt"
+    hidden: yes
+  }
+
+  dimension: error_code {
+    type: string
+    sql: ${TABLE}."ERROR_CODE" ;;
+    description: "Error code, if the query returned an error"
+    hidden: yes
+  }
+
+  dimension: error_message {
+    type: string
+    sql: ${TABLE}."ERROR_MESSAGE" ;;
+    description: "Error message, if the query returned an error"
+    hidden: yes
+  }
+
+  dimension: execution_status {
+    type: string
+    sql: ${TABLE}."EXECUTION_STATUS" ;;
+    description: "Execution status for the query. Valid values: `success`, `fail`, `incident`."
+  }
+
+  dimension: execution_time_ms {
+    type: number
+    sql: ${TABLE}."EXECUTION_TIME_MS" ;;
+    description: "Execution time (in milliseconds)"
+    hidden: yes
+  }
+
+  dimension: execution_time_s {
+    type: number
+    sql: ${TABLE}."EXECUTION_TIME_S" ;;
+    description: "Execution time (in seconds)"
+  }
+
+
+  dimension: list_external_files_time_ms {
+    type: number
+    sql: ${TABLE}."LIST_EXTERNAL_FILES_TIME_MS" ;;
+    description: "Time (in milliseconds) spent listing external files"
+    hidden: yes
+  }
+
+  dimension: list_external_files_time_s {
+    type: number
+    sql: ${TABLE}."LIST_EXTERNAL_FILES_TIME_S" ;;
+    description: "Time (in seconds) spent listing external files"
+    hidden: yes
+  }
+
+  dimension: partitions_scanned {
+    type: number
+    sql: ${TABLE}."PARTITIONS_SCANNED" ;;
+    description: "Number of micro-partitions scanned"
+  }
+
+  dimension: partitions_total {
+    type: number
+    sql: ${TABLE}."PARTITIONS_TOTAL" ;;
+    description: "Total micro-partitions of all tables included in this query"
+  }
+
+  dimension: percentage_scanned_from_cache {
+    type: number
+    sql: ${TABLE}."PERCENTAGE_SCANNED_FROM_CACHE" ;;
+    description: "The percentage of data scanned from the local disk cache"
+    value_format_name: percent_2
+  }
+
+  dimension: query_acceleration_bytes_scanned {
+    type: number
+    sql: ${TABLE}."QUERY_ACCELERATION_BYTES_SCANNED" ;;
+    description: "Number of bytes scanned by the query acceleration service"
+    hidden: yes
+  }
+
+  dimension: query_acceleration_partitions_scanned {
+    type: number
+    sql: ${TABLE}."QUERY_ACCELERATION_PARTITIONS_SCANNED" ;;
+    description: "Number of partitions scanned by the query acceleration service"
+    hidden: yes
+  }
+
+  dimension: query_acceleration_upper_limit_scale_factor {
+    type: number
+    sql: ${TABLE}."QUERY_ACCELERATION_UPPER_LIMIT_SCALE_FACTOR" ;;
+    description: "Upper limit scale factor that a query would have benefited from"
+    hidden: yes
+  }
+
+  dimension: query_id {
+    type: string
+    sql: ${TABLE}."QUERY_ID" ;;
+    description: "Internal/system-generated identifier for the SQL statement"
+    group_label: "Query Properties"
+  }
+
+  dimension: query_load_percent {
+    type: number
+    sql: ${TABLE}."QUERY_LOAD_PERCENT" ;;
+    description: "The approximate percentage of active compute resources in the warehouse for this query execution"
+    group_label: "Query Properties"
+  }
+
+  dimension: query_tag {
+    type: string
+    sql: ${TABLE}."QUERY_TAG" ;;
+    description: "Query tag set for this statement through the QUERY_TAG session parameter"
+    group_label: "Query Properties"
+  }
+
+  dimension: query_text {
+    type: string
+    sql: ${TABLE}."QUERY_TEXT" ;;
+    description: "Text of the SQL statement"
+    group_label: "Query Properties"
+    hidden: yes
+  }
+
+  dimension: query_text_no_comments {
+    type: string
+    sql: ${TABLE}."QUERY_TEXT_NO_COMMENTS" ;;
+    description: "Contains the original query text stripped of any comments"
+    group_label: "Query Properties"
+  }
+
+  dimension: query_type {
+    type: string
+    sql: ${TABLE}."QUERY_TYPE" ;;
+    description: "DML, query, etc. If the query failed, then the query type may be UNKNOWN"
+    group_label: "Query Properties"
+  }
+
+  dimension: queued_overload_time_ms {
+    type: number
+    sql: ${TABLE}."QUEUED_OVERLOAD_TIME_MS" ;;
+    description: "Time (in milliseconds) spent in the warehouse queue, due to the warehouse being overloaded by the current query workload"
+    hidden: yes
+  }
+
+  dimension: queued_overload_time_s {
+    type: number
+    sql: ${TABLE}."QUEUED_OVERLOAD_TIME_S" ;;
+    description: "Time (in seconds) spent in the warehouse queue, due to the warehouse being overloaded by the current query workload"
+  }
+
+  dimension: queued_provisioning_time_ms {
+    type: number
+    sql: ${TABLE}."QUEUED_PROVISIONING_TIME_MS" ;;
+    description: "Time (in milliseconds) spent in the warehouse queue, waiting for the warehouse compute resources to provision, due to warehouse creation, resume, or resize"
+    hidden: yes
+  }
+
+  dimension: queued_provisioning_time_s {
+    type: number
+    sql: ${TABLE}."QUEUED_PROVISIONING_TIME_S" ;;
+    description: "Time (in seconds) spent in the warehouse queue, waiting for the warehouse compute resources to provision, due to warehouse creation, resume, or resize"
+  }
+
+  dimension: queued_repair_time_ms {
+    type: number
+    sql: ${TABLE}."QUEUED_REPAIR_TIME_MS" ;;
+    description: "Time (in milliseconds) spent in the warehouse queue, waiting for compute resources in the warehouse to be repaired"
+    hidden: yes
+  }
+
+  dimension: queued_repair_time_s {
+    type: number
+    sql: ${TABLE}."QUEUED_REPAIR_TIME_S" ;;
+    description: "Time (in seconds) spent in the warehouse queue, waiting for compute resources in the warehouse to be repaired"
+  }
+
+  dimension: release_version {
+    type: string
+    sql: ${TABLE}."RELEASE_VERSION" ;;
+    description: "Release version in the format of `<major_release>.<minor_release>.<patch_release>`"
+    hidden: yes
+  }
+
+  dimension: role_name {
+    type: string
+    sql: ${TABLE}."ROLE_NAME" ;;
+    description: "Role that was active in the session at the time of the query"
+  }
+
+  dimension: rows_deleted {
+    type: number
+    sql: ${TABLE}."ROWS_DELETED" ;;
+    description: "rows_deleted"
+    group_label: "Rows Affected Properties"
+  }
+
+  dimension: rows_inserted {
+    type: number
+    sql: ${TABLE}."ROWS_INSERTED" ;;
+    description: "Number of rows inserted by the query"
+    group_label: "Rows Affected Properties"
+  }
+
+  dimension: rows_produced {
+    type: number
+    sql: ${TABLE}."ROWS_PRODUCED" ;;
+    description: "rows_produced"
+    group_label: "Rows Affected Properties"
+  }
+
+  dimension: rows_unloaded {
+    type: number
+    sql: ${TABLE}."ROWS_UNLOADED" ;;
+    description: "Number of rows unloaded during data export"
+    group_label: "Rows Affected Properties"
+  }
+
+  dimension: rows_updated {
+    type: number
+    sql: ${TABLE}."ROWS_UPDATED" ;;
+    description: "Number of rows updated by the query"
+    group_label: "Rows Affected Properties"
+  }
+
+  dimension: schema_id {
+    type: number
+    sql: ${TABLE}."SCHEMA_ID" ;;
+    description: "Internal/system-generated identifier for the schema that was in use"
+    hidden: yes
+  }
+
+  dimension: schema_name {
+    type: string
+    sql: ${TABLE}."SCHEMA_NAME" ;;
+    description: "Schema that was in use at the time of the query"
+  }
+
+  dimension: session_id {
+    type: number
+    sql: ${TABLE}."SESSION_ID" ;;
+    description: "Session that executed the statement"
+  }
+
+  dimension: total_elapsed_time_ms {
+    type: number
+    sql: ${TABLE}."TOTAL_ELAPSED_TIME_MS" ;;
+    description: "Elapsed time (in milliseconds)"
+    hidden: yes
+  }
+
+  dimension: elapsed_time_s {
+    type: number
+    sql: ${TABLE}."TOTAL_ELAPSED_TIME_S" ;;
+    description: "Elapsed time (in seconds)"
+  }
+
+  dimension: transaction_blocked_time_ms {
+    type: number
+    sql: ${TABLE}."TRANSACTION_BLOCKED_TIME_MS" ;;
+    description: "Time (in milliseconds) spent blocked by a concurrent DML"
+    hidden: yes
+  }
+
+  dimension: transaction_blocked_time_s {
+    type: number
+    sql: ${TABLE}."TRANSACTION_BLOCKED_TIME_S" ;;
+    description: "Time (in seconds) spent blocked by a concurrent DML"
+  }
+
+  dimension: user_name {
+    type: string
+    sql: ${TABLE}."USER_NAME" ;;
+    description: "User who issued the query"
+  }
+
+  dimension: warehouse_id {
+    type: number
+    sql: ${TABLE}."WAREHOUSE_ID" ;;
+    description: "Internal/system-generated identifier for the warehouse that was used"
+    group_label: "Warehouse Properties"
+    hidden: yes
+ }
+
+  dimension: warehouse_name {
+    type: string
+    sql: ${TABLE}."WAREHOUSE_NAME" ;;
+    description: "Warehouse that the query executed on, if any"
+    group_label: "Warehouse Properties"
+  }
+
+  dimension: warehouse_size {
+    type: string
+    sql: ${TABLE}."WAREHOUSE_SIZE" ;;
+    description: "Size of the warehouse when this statement executed"
+    group_label: "Warehouse Properties"
+  }
+
+  dimension: warehouse_type {
+    type: string
+    sql: ${TABLE}."WAREHOUSE_TYPE" ;;
+    description: "Type of the warehouse when this statement executed"
+    group_label: "Warehouse Properties"
+  }
+
+  ## Flags
+  dimension: is_client_generated_statement {
+    type: yesno
+    sql: ${TABLE}."IS_CLIENT_GENERATED_STATEMENT" ;;
+    description: "Indicates whether the query was client-generated. These tend to be queries from the Snowflake UI "
+  }
+
+  dimension: has_ran_on_warehouse {
+    type: yesno
+    sql: ${TABLE}."RAN_ON_WAREHOUSE" ;;
+    description: "True if the query executed in a virtual warehouse"
+  }
+
+  ## Dates and Timestamps
+  dimension_group: start {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      hour,
+      date,
+      week,
+      month,
+      quarter,
+      year,
+      day_of_week_index
+    ]
+    sql: ${TABLE}."START_TIME" ;;
+    description: "Statement start time (in the UTC time zone)"
+  }
+
+  dimension_group: execution_start {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    sql: ${TABLE}."EXECUTION_START_TIME" ;;
+    description: "When the query began executing on the warehouse (in the UTC time zone)"
+    hidden: yes
+  }
+
+  dimension_group: end {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    sql: ${TABLE}."END_TIME" ;;
+    description: "Statement end time (in the UTC time zone)"
+    hidden: yes
+  }
+
+
+}
