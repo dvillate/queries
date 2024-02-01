@@ -1,0 +1,11 @@
+project_name: "project_name"
+
+constant: database_schema {
+  # Production
+  value: "prod.schema"
+
+  # Daniel Dev
+  # value: "dev.dbt_danielv"
+}
+
+## @{database_schema}.
