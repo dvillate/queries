@@ -1,0 +1,266 @@
+view: dbt_queries {
+  label: "dbt Snowflake Usage"
+  sql_table_name: "CORE_DBT_SNOWFLAKE_MONITORING"."DBT_QUERIES"
+    ;;
+
+  ## Primary Key
+  dimension: surrogate_key {
+    type: string
+    sql: ${TABLE}."QUERY_ID" || ${TABLE}."START_TIME" ;;
+    hidden: yes
+  }
+
+  ## Properties
+  dimension: dbt_cloud_job_id {
+    type: string
+    sql: ${TABLE}."DBT_CLOUD_JOB_ID" ;;
+    description: "The ID of the issuing job"
+    group_label: "dbt Cloud Properties"
+  }
+
+  dimension: dbt_cloud_job_url {
+    type: string
+    sql: ${TABLE}."DBT_CLOUD_JOB_URL" ;;
+    description: "The URL of the issuing job"
+    group_label: "dbt Cloud Properties"
+    hidden: yes
+  }
+
+  dimension: dbt_cloud_project_id {
+    type: string
+    sql: ${TABLE}."DBT_CLOUD_PROJECT_ID" ;;
+    description: "The ID of the project"
+    group_label: "dbt Cloud Properties"
+  }
+
+  dimension: dbt_cloud_run_id {
+    type: string
+    sql: ${TABLE}."DBT_CLOUD_RUN_ID" ;;
+    description: "The ID of the issuing job"
+    group_label: "dbt Cloud Properties"
+  }
+
+  dimension: dbt_cloud_run_reason {
+    type: string
+    sql:
+      case
+        when ${query_history_enriched.bi_usage_groups} = 'Users' then 'Local development'
+        when ${TABLE}."DBT_CLOUD_RUN_REASON" ilike 'Kicked off%' then 'Kicked off from UI'
+      else ${TABLE}."DBT_CLOUD_RUN_REASON" end;;
+    description: "The run reason for the issuing run"
+    group_label: "dbt Cloud Properties"
+  }
+
+  dimension: dbt_cloud_run_reason_category {
+    type: string
+    sql: ${TABLE}."DBT_CLOUD_RUN_REASON_CATEGORY" ;;
+    description: "The run reason category for the issuing run"
+    group_label: "dbt Cloud Properties"
+  }
+
+  dimension: dbt_cloud_run_url {
+    type: string
+    sql: ${TABLE}."DBT_CLOUD_RUN_URL" ;;
+    description: "The URL of the issuing run"
+    group_label: "dbt Cloud Properties"
+    hidden: yes
+  }
+
+  dimension: dbt_invocation_id {
+    type: string
+    sql: ${TABLE}."DBT_INVOCATION_ID" ;;
+    description: "The id of the dbt invocation"
+  }
+
+  dimension: dbt_node_alias {
+    type: string
+    sql: ${TABLE}."DBT_NODE_ALIAS" ;;
+    description: "Alias set for the node"
+    group_label: "Node Properties"
+    hidden: yes
+  }
+
+  dimension: dbt_node_database {
+    type: string
+    sql: ${TABLE}."DBT_NODE_DATABASE" ;;
+    description: "The database configured for the node"
+    group_label: "Node Properties"
+  }
+
+  dimension: dbt_node_id {
+    type: string
+    sql: ${TABLE}."DBT_NODE_ID" ;;
+    description: "The identifier for the node that the query relates t0"
+    group_label: "Node Properties"
+    hidden: yes
+  }
+
+  dimension: dbt_node_materialized {
+    type: string
+    sql: ${TABLE}."DBT_NODE_MATERIALIZED" ;;
+    description: "The materialization of the node that the query relates to"
+    group_label: "Node Properties"
+  }
+
+  dimension: dbt_node_name {
+    type: string
+    sql: ${TABLE}."DBT_NODE_NAME" ;;
+    description: "The name of the node that the query relates to"
+    group_label: "Node Properties"
+  }
+
+  dimension: dbt_node_original_file_path {
+    type: string
+    sql: ${TABLE}."DBT_NODE_ORIGINAL_FILE_PATH" ;;
+    description: "The file path of the dbt node"
+    group_label: "Node Properties"
+    hidden: yes
+  }
+
+  dimension: dbt_node_package_name {
+    type: string
+    sql: ${TABLE}."DBT_NODE_PACKAGE_NAME" ;;
+    description: "The package name of the dbt node."
+    group_label: "Node Properties"
+  }
+
+  dimension: dbt_node_refs {
+    type: string
+    sql: ${TABLE}."DBT_NODE_REFS" ;;
+    description: "Array of all refs used by the node"
+    group_label: "Node Properties"
+    hidden: yes
+  }
+
+  dimension: dbt_node_resource_type {
+    type: string
+    sql: ${TABLE}."DBT_NODE_RESOURCE_TYPE" ;;
+    description: "The resource type of the node that the query relates to"
+    group_label: "Node Properties"
+  }
+
+  dimension: dbt_node_schema {
+    type: string
+    sql: ${TABLE}."DBT_NODE_SCHEMA" ;;
+    description: "The schema configured for the node"
+    group_label: "Node Properties"
+  }
+
+  dimension: dbt_project_name {
+    type: string
+    sql: ${TABLE}."DBT_PROJECT_NAME" ;;
+    description: "Name of the dbt project"
+  }
+
+  dimension: dbt_snowflake_query_tags_version {
+    type: string
+    sql: ${TABLE}."DBT_SNOWFLAKE_QUERY_TAGS_VERSION" ;;
+    description: "Version of the dbt-snowflake-query-tags package that generated the metadata"
+    hidden: yes
+  }
+
+  dimension: dbt_target_database {
+    type: string
+    sql: ${TABLE}."DBT_TARGET_DATABASE" ;;
+    description: "The target database for the dbt invocation"
+    hidden: yes
+  }
+
+  dimension: dbt_target_name {
+    type: string
+    sql: ${TABLE}."DBT_TARGET_NAME" ;;
+    description: "The target name for the dbt invocation"
+    hidden: yes
+  }
+
+  dimension: dbt_target_schema {
+    type: string
+    sql: ${TABLE}."DBT_TARGET_SCHEMA" ;;
+    description: "The target schema for the dbt invocation"
+    hidden: yes
+  }
+
+  dimension: dbt_version {
+    type: string
+    sql: ${TABLE}."DBT_VERSION" ;;
+    description: "Version of dbt in use"
+    hidden: yes
+  }
+
+  dimension: dbt_query_cost {
+    type: number
+    sql: ${TABLE}."QUERY_COST" ;;
+    description: "Total cost associated with the query, calculated as sum of compute_cost and cloud_services_cost, in USD"
+    value_format_name: usd
+    hidden: yes
+  }
+
+  dimension: dbt_custom_users {
+    type: string
+    sql: case
+      when left(${query_history_enriched.schema_name},12) = 'DBT_CLOUD_PR' then 'DBT_CLOUD_PR'
+      else ${query_history_enriched.user_name} end;;
+    description: "Custom bucketing that creates a dbt cloud PR users for our github PR schemas"
+  }
+
+  dimension: dbt_job_name {
+    type: string
+    sql: case
+      when ${dbt_cloud_job_id} = '219600' then 'Datafold Artifacts - BI'
+      when ${dbt_cloud_job_id} = '187192' then 'CI Job - BI'
+      when ${dbt_cloud_job_id} = '129405' then 'Production - Daily Models Sync - BI'
+      when ${dbt_cloud_job_id} = '261936' then 'Production - High Frequency Models Sync - BI'
+      when ${dbt_cloud_job_id} = '197235' then 'Targeted Production - BI'
+      when ${dbt_cloud_job_id} = '122983' then 'Full Production [Manual] - BI'
+      when ${dbt_cloud_job_id} = '227756' then 'dbt Packages - BI'
+      when ${dbt_cloud_job_id} = '231971' then 'dbt Freshness - BI'
+      when ${dbt_cloud_job_id} = '249018' then 'Production Testing - BI'
+      when ${dbt_cloud_job_id} = '269414' then 'SMS Sales - BI'
+      when ${dbt_cloud_job_id} = '257168' then 'Snapshot Daily - BI'
+      when ${dbt_cloud_job_id} = '13905' then 'Analytics Four Hours - DW'
+      when ${dbt_cloud_job_id} = '244234' then 'dbt Packages - DW'
+      when ${dbt_cloud_job_id} = '18176' then 'Full Refresh [Manual] - DW'
+      when ${dbt_cloud_job_id} = '35226' then 'Full Refresh [Single Model] - DW'
+      when ${dbt_cloud_job_id} = '42660' then 'Hourly Incremental - DW'
+      when ${dbt_cloud_job_id} = '52856' then 'Manual SFDC - DW'
+      when ${dbt_cloud_job_id} = '248684' then 'Production - Daily Models Sync - DW'
+      when ${dbt_cloud_job_id} = '248682' then 'Production - High Frequency Models Sync - DW'
+      when ${dbt_cloud_job_id} = '13906' then 'Snapshot Daily - DW'
+      when ${dbt_cloud_job_id} = '263683' then 'Migration Testing - DW'
+      when ${dbt_cloud_job_id} = '262051' then 'Targeted Production - DW'
+      when ${dbt_cloud_job_id} = '282387' then 'Weekly Incremental Refresh - BI'
+      when ${dbt_cloud_job_id} = '283114' then 'Seed Full Refresh - BI'
+      when ${dbt_cloud_job_id} = '282375' then 'Schema Clean up - BI'
+      when ${query_history_enriched.bi_usage_groups} = 'Users' then 'Local development'
+      when ${query_history_enriched.query_text_no_comments} ilike '%elementary%' then 'Elementary'
+      else 'Unmapped' end;;
+    description: "Names of our dbt cloud jobs"
+  }
+
+  ## Flags
+  dimension: dbt_node_is_incremental {
+    type: yesno
+    sql: ${TABLE}."DBT_NODE_IS_INCREMENTAL" ;;
+    description: "Boolean describing if the node run was incremental"
+    group_label: "Node Properties"
+  }
+
+  ## Measures
+  measure: node_count {
+    type: count_distinct
+    sql: ${surrogate_key} ;;
+  }
+
+  measure: average_dbt_query_cost {
+    type: average
+    sql: ${dbt_query_cost} ;;
+    value_format_name: usd
+  }
+
+  measure: total_dbt_query_cost {
+    type: sum
+    sql: ${dbt_query_cost} ;;
+    value_format_name: usd
+  }
+
+}
