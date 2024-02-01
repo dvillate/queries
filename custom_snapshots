@@ -1,0 +1,82 @@
+{% macro custom_snapshot() %}
+
+    {% set snapshot_table = '' %}
+
+    {% set source_table = '' %}
+
+    {% set skey = ['id', 'snapshot_date'] %}
+
+    {% if not adapter.get_columns_in_relation(snapshot_table) %}
+
+        {%- set create_table -%}
+
+        -- Create the table if it doesn't exist
+        create table {{ snapshot_table }} as
+        with enrich_data as (
+            select 
+                *
+                ,object_construct(*) as value
+                ,date_trunc('day',convert_timezone('UTC', current_timestamp()))::date as snapshot_date  
+                ,date_trunc('day',convert_timezone('UTC', current_timestamp()))::date as upsert_ran_date
+            from
+                {{ ref(source_table) }}
+        )
+
+        select 
+            {{ dbt_utils.generate_surrogate_key(skey) }} as skey
+            ,value
+            ,snapshot_date
+            ,upsert_ran_date  
+        from
+            enrich_data;
+
+        {%- endset -%}
+
+        {% do run_query(create_table) %}
+
+            -- Log success message after creating the table    
+            {% do log('Table successfully created', True) %}
+
+    {% else %}
+
+        {%- set update_table -%}
+
+        -- Delete prior records if they exist for the same day
+        delete from {{ snapshot_table }}
+        where snapshot_date = date_trunc('day',convert_timezone('UTC', current_timestamp()))::date;
+        
+        -- Insert new records
+        insert into {{ snapshot_table }}
+        with enrich_data as (
+            select 
+                *
+                ,object_construct(*) as value
+                ,date_trunc('day',convert_timezone('UTC', current_timestamp()))::date as snapshot_date
+                ,date_trunc('day',convert_timezone('UTC', current_timestamp()))::date as upsert_ran_date  
+            from {{ ref(source_table) }}
+        )
+
+        select 
+            {{ dbt_utils.generate_surrogate_key(skey) }} as skey
+            ,value
+            ,snapshot_date
+            ,upsert_ran_date  
+        from enrich_data
+
+        {%- endset -%}
+
+        {% do run_query(update_table) %}
+
+            -- Log success message after updating the table
+            {% do log('Table successfully updated', True) %}
+
+    {% endif %}
+
+    {%- if not adapter.get_columns_in_relation(snapshot_table) and not run_query(create_table) and not run_query(update_table) -%}
+        
+        -- Log an error message if the table was not created or updated
+        {% do log('Error: Table not created or updated', True) %}
+        
+    {%- endif -%}
+
+{% endmacro %}
