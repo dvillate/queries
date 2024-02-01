@@ -1,0 +1,17 @@
+include: "/business_intelligence/_base_views/snowflake_monitoring/*.lkml"
+include: "/business_intelligence/_refined_views/snowflake_monitoring/*.lkml"
+
+explore: snowflake_monitoring {
+  label: "Snowflake Monitoring"
+  description: "Snowflake metadata and costs associated with dbt queries"
+  view_name: query_history_enriched
+  view_label: "Snowflake Details"
+
+  join: dbt_queries {
+    type: left_outer
+    sql_on:
+      ${query_history_enriched.surrogate_key} = ${dbt_queries.surrogate_key};;
+    relationship: one_to_one
+    view_label: "dbt Query Details"
+  }
+}
