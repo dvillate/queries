@@ -1,0 +1,22 @@
+{% macro sltv_unload() %}
+
+    {% set source_table = '' %}
+    {% set unload_date = run_started_at.strftime("%Y_%m_%d") %}
+
+    {%- set unload_table -%}
+
+    copy into @path/prefix_{{unload_date}}
+    from (select * from {{ ref(source_table) }} where date = current_date - 1)
+    file_format = ( type = csv)
+    single = true --ensures the unload is done to one file, and not spread across multiple
+    header = true --includes the columns names in the unloaded file
+    overwrite = true --will allow us to overwrite the file if needed, ex: we correct a value and rerun the unload process later in the day
+;
+
+    {%- endset -%}
+
+    {% do run_query(unload_table) %}
+
+    {% do log('Table successfully unloaded', True) %}
+
+{% endmacro %}
