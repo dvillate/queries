@@ -1,0 +1,28 @@
+{% macro drop_pr_schemas() %}
+
+    {%- set get_pr_schemas_sql -%}
+
+        with schema_names as (
+            select schema_name 
+            from dev.information_schema.schemata
+            where schema_name ilike 'dbt_cloud_pr_%'
+        )
+        
+      select 
+        'DROP SCHEMA ' || schema_name || ';' as drop_commands
+      from  schema_names
+
+    {%- endset -%}
+
+  {% set drop_commands = run_query(get_pr_schemas_sql).columns[0].values() %}
+
+  {% if drop_commands %}
+    {% for drop_command in drop_commands %}
+      {% do log(drop_command, True) %}
+      {% do run_query(drop_command) %}
+    {% endfor %}
+  {% else %}
+    {% do log('No schemas to clean.', True) %}
+  {% endif %}
+
+{% endmacro %}
